@@ -131,8 +131,15 @@ func (b *Local) opPlan(
 			b.CLI.Output("\n" + b.Colorize().Color(strings.TrimSpace(planNoChanges)))
 			return
 		}
-
 		b.renderPlan(dispPlan)
+
+		moves := dispPlan.PossibleMoves(op.ActualState)
+
+		fmt.Println("\nInstead, it can also possible to do terraform state mv, which doesn't destroy and create in some cases. Following are recommended commands for moving.\n\n")
+
+		for k, v := range moves {
+			fmt.Println("terraform state mv ", k, " ", v)
+		}
 
 		// Give the user some next-steps, unless we're running in an automation
 		// tool which is presumed to provide its own UI for further actions.

@@ -7,6 +7,7 @@ import (
 	"github.com/hashicorp/terraform/backend"
 	"github.com/hashicorp/terraform/config"
 	"github.com/hashicorp/terraform/config/module"
+	"github.com/hashicorp/terraform/helper/deepcopy"
 	"github.com/hashicorp/terraform/tfdiags"
 )
 
@@ -17,6 +18,14 @@ type PlanCommand struct {
 }
 
 func (c *PlanCommand) Run(args []string) int {
+
+	show := &ShowCommand{
+		Meta: deepcopy.Copy(c.Meta).(Meta),
+	}
+
+	var a []string
+	oldState, _ := show.State(a)
+
 	var destroy, refresh, detailed bool
 	var outPath string
 	var moduleDepth int
@@ -104,9 +113,11 @@ func (c *PlanCommand) Run(args []string) int {
 	opReq.PlanRefresh = refresh
 	opReq.PlanOutPath = outPath
 	opReq.Type = backend.OperationTypePlan
+	opReq.ActualState = oldState
 
 	// Perform the operation
 	op, err := c.RunOperation(b, opReq)
+
 	if err != nil {
 		diags = diags.Append(err)
 	}

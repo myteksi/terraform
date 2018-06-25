@@ -14,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform/helper/copy"
 	"github.com/hashicorp/terraform/terraform"
 	"github.com/mitchellh/cli"
+	"log"
 )
 
 func TestPlan(t *testing.T) {
@@ -35,7 +36,6 @@ func TestPlan(t *testing.T) {
 		},
 	}
 
-	args := []string{}
 	if code := c.Run(args); code != 0 {
 		t.Fatalf("bad: %d\n\n%s", code, ui.ErrorWriter.String())
 	}
@@ -96,13 +96,58 @@ func TestPlan_plan(t *testing.T) {
 		},
 	}
 
-	args := []string{planPath}
+	//statePath := "/Users/savankumar.gudaas/gopath/src/gitlab.myteksi.net/sysops/infrastructure/qa/applications/chronos"
+	args := []string{
+		//"-state", statePath,
+		planPath}
 	if code := c.Run(args); code != 0 {
 		t.Fatalf("bad: %d\n\n%s", code, ui.ErrorWriter.String())
 	}
 
 	if p.RefreshCalled {
 		t.Fatal("refresh should not be called")
+	}
+}
+
+func TestPlan_rename(t *testing.T) {
+	//log.SetOutput(os.Stdout)
+	tmp, cwd := testCwd(t)
+	defer testFixCwd(t, tmp, cwd)
+
+	originalState := &terraform.State{
+		Modules: []*terraform.ModuleState{
+			&terraform.ModuleState{
+				Path: []string{"root"},
+				Resources: map[string]*terraform.ResourceState{
+					"test_instance.foo": &terraform.ResourceState{
+						Type: "test_instance",
+						Primary: &terraform.InstanceState{
+							ID: "bar",
+						},
+					},
+				},
+			},
+		},
+	}
+
+	statePath := testStateFile(t, originalState)
+
+	p := testProvider()
+	ui := new(cli.MockUi)
+	c := &PlanCommand{
+		Meta: Meta{
+			testingOverrides: metaOverridesForProvider(p),
+			Ui:               ui,
+		},
+	}
+
+	args := []string{
+		"-state", statePath,
+		testFixturePath("rename"),
+	}
+
+	if code := c.Run(args); code != 0 {
+		t.Fatalf("bad: %d\n\n%s", code, ui.ErrorWriter.String())
 	}
 }
 
@@ -125,7 +170,7 @@ func TestPlan_destroy(t *testing.T) {
 
 	outPath := testTempFile(t)
 	statePath := testStateFile(t, originalState)
-
+	//statePath := "/Users/savankumar.gudaas/gopath/src/gitlab.myteksi.net/sysops/infrastructure/qa/applications/chronos"
 	p := testProvider()
 	ui := new(cli.MockUi)
 	c := &PlanCommand{
