@@ -391,6 +391,89 @@ func (p *Plan) PossibleMoves(oldState *terraform.State) map[string]string {
 	return result
 }
 
+func (p *Plan) FindDiff(state *terraform.State, diff1 string, diff2 string) {
+
+	if diff1 == "" && diff2 == "" {
+		return
+	}
+	fmt.Println("Resouce Diff Summary")
+	fmt.Println("diff1: ", diff1)
+	fmt.Println("diff2: ", diff2)
+	if diff1 == "" && diff2 != "" {
+		fmt.Println("diff1 is not provided as argument")
+		return
+	}
+	if diff1 !="" && diff2 == "" {
+		fmt.Println("diff2 is not provided as argument")
+		return
+	}
+
+
+
+	resourceMap := p.typeWiseDiffMap()
+	diff1Resource := resourceMap[diff1]
+	diff2Resource := resourceMap[diff2]
+
+	if diff1Resource == nil {
+		fmt.Println("diff1=", diff1, " is not a Resource")
+		return
+	}
+	if diff2Resource == nil {
+		fmt.Println("diff2=", diff2, " is not a Resource")
+		return
+	}
+
+
+	if diff1Resource.Addr.Type != diff2Resource.Addr.Type {
+		fmt.Println("Resources Type Mismatch: ", diff1Resource.Addr.Type, "!=", diff2Resource.Addr.Type)
+		return
+	}
+
+	fmt.Println("\nAttribute\tdiff1\tdiff2")
+
+	maps:=p.oldState(state)
+	var changes bool = false
+	if diff1Resource.Action == terraform.DiffCreate  {
+		for _, attr := range diff1Resource.Attributes {
+			if attr.NewValue == "" {
+				continue
+			}
+
+			if attr.NewValue != p.getAttributValue(maps, diff2Resource, attr.Path) {
+				changes = true
+				fmt.Println(attr.Path, "\t", attr.Path, "\t", attr.NewValue, "(mis-match)")
+			}
+		}
+	} else if diff2Resource.Action == terraform.DiffDestroy {
+		for _, attr := range diff2Resource.Attributes {
+			if attr.NewValue == "" {
+				continue
+			}
+
+			if attr.NewValue != p.getAttributValue(maps, diff1Resource, attr.Path) {
+				changes = true
+				fmt.Println(attr.Path, "\t", attr.Path, "\t", attr.NewValue, "(mis-match)")
+			}
+		}
+	}
+	if changes == false {
+		fmt.Println("No Diff among resources")
+	}
+	fmt.Println("\nEnd of Resource Summary")
+}
+
+func (p *Plan) getAttributValue(oldStateMap map[string]map[string]map[string]interface{}, aDiff *InstanceDiff, key string) interface{}{
+	if aDiff.Action == terraform.DiffDestroy {
+		return oldStateMap[aDiff.Addr.Type][aDiff.Addr.String()][key]
+	}
+	for _, attr := range aDiff.Attributes {
+		if attr.Path == key {
+			return attr.NewValue
+		}
+	}
+	return ""
+}
+
 func (p *Plan) checkRename(create *InstanceDiff, delete *InstanceDiff, oldStateMap map[string]map[string]map[string]interface{}) bool {
 	for _, attr := range create.Attributes {
 		if attr.NewValue == "" {
@@ -405,6 +488,14 @@ func (p *Plan) checkRename(create *InstanceDiff, delete *InstanceDiff, oldStateM
 	It means eligible for state mv
 	*/
 	return true
+}
+
+func (p *Plan) typeWiseDiffMap() map[string]*InstanceDiff {
+	result := make(map[string]*InstanceDiff)
+	for _, diff := range p.Resources {
+		result[diff.Addr.String()] = diff
+	}
+	return result
 }
 
 func (p *Plan) typeWiseDiff() map[string]map[terraform.DiffChangeType][]*InstanceDiff {
@@ -424,6 +515,7 @@ func (p *Plan) typeWiseDiff() map[string]map[terraform.DiffChangeType][]*Instanc
 
 	return selectedDiffs
 }
+
 
 func (p *Plan) oldState(state *terraform.State) map[string]map[string]map[string]interface{} {
 

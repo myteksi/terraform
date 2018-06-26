@@ -143,6 +143,10 @@ func (b *Local) opPlan(
 
 		fmt.Println("\nAfter state mv, re-run to list more state mv (if exists)\n")
 
+		if op.Diff1 != "" || op.Diff2 != "" {
+			dispPlan.FindDiff(op.ActualState, op.Diff1, op.Diff2)
+		}
+
 		// Give the user some next-steps, unless we're running in an automation
 		// tool which is presumed to provide its own UI for further actions.
 		if !b.RunningInAutomation {

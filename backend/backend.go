@@ -149,6 +149,8 @@ type Operation struct {
 
 	// Actual State for performing operation
 	ActualState *terraform.State
+	Diff1 string
+	Diff2 string
 }
 
 // RunningOperation is the result of starting an operation.
