@@ -14,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform/helper/copy"
 	"github.com/hashicorp/terraform/terraform"
 	"github.com/mitchellh/cli"
-	"log"
 )
 
 func TestPlan(t *testing.T) {
@@ -35,7 +34,7 @@ func TestPlan(t *testing.T) {
 			Ui:               ui,
 		},
 	}
-
+	var args []string
 	if code := c.Run(args); code != 0 {
 		t.Fatalf("bad: %d\n\n%s", code, ui.ErrorWriter.String())
 	}

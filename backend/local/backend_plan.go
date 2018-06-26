@@ -135,11 +135,13 @@ func (b *Local) opPlan(
 
 		moves := dispPlan.PossibleMoves(op.ActualState)
 
-		fmt.Println("\nInstead, it can also possible to do terraform state mv, which doesn't destroy and create in some cases. Following are recommended commands for moving.\n\n")
+		fmt.Println("\nInstead, you can apply following terraform state mv, to avoid destroy & create in some cases.\n\n")
 
 		for k, v := range moves {
 			fmt.Println("terraform state mv ", k, " ", v)
 		}
+
+		fmt.Println("\nAfter state mv, re-run to list more state mv (if exists)\n")
 
 		// Give the user some next-steps, unless we're running in an automation
 		// tool which is presumed to provide its own UI for further actions.
