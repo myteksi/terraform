@@ -131,8 +131,21 @@ func (b *Local) opPlan(
 			b.CLI.Output("\n" + b.Colorize().Color(strings.TrimSpace(planNoChanges)))
 			return
 		}
-
 		b.renderPlan(dispPlan)
+
+		moves := dispPlan.PossibleMoves(op.ActualState)
+
+		fmt.Println("\nInstead, you can apply following terraform state mv, to avoid destroy & create in some cases.\n\n")
+
+		for k, v := range moves {
+			fmt.Println("terraform state mv ", k, " ", v)
+		}
+
+		fmt.Println("\nAfter state mv, re-run to list more state mv (if exists)\n")
+
+		if op.Diff1 != "" || op.Diff2 != "" {
+			dispPlan.FindDiff(op.ActualState, op.Diff1, op.Diff2)
+		}
 
 		// Give the user some next-steps, unless we're running in an automation
 		// tool which is presumed to provide its own UI for further actions.

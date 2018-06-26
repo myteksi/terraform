@@ -250,7 +250,7 @@ func TestOutput_emptyOutputsErr(t *testing.T) {
 	ui := new(cli.MockUi)
 	c := &OutputCommand{
 		Meta: Meta{
-			ContextOpts: testCtxConfig(testProvider()),
+			//ContextOpts: testCtxConfig(testProvider()),
 			Ui:          ui,
 		},
 	}
@@ -278,7 +278,7 @@ func TestOutput_jsonEmptyOutputs(t *testing.T) {
 	ui := new(cli.MockUi)
 	c := &OutputCommand{
 		Meta: Meta{
-			ContextOpts: testCtxConfig(testProvider()),
+			//ContextOpts: testCtxConfig(testProvider()),
 			Ui:          ui,
 		},
 	}
