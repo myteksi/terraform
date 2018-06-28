@@ -135,17 +135,13 @@ func (b *Local) opPlan(
 
 		moves := dispPlan.PossibleMoves(op.ActualState)
 
-		fmt.Println("\nInstead, you can apply following terraform state mv, to avoid destroy & create in some cases.\n\n")
+		b.CLI.Output(planShowMoves)
 
 		for k, v := range moves {
-			fmt.Println("terraform state mv ", k, " ", v)
+			b.CLI.Output("terraform state mv "+ k+ " "+ v)
 		}
 
-		fmt.Println("\nAfter state mv, re-run to list more state mv (if exists)\n")
 
-		if op.Diff1 != "" || op.Diff2 != "" {
-			dispPlan.FindDiff(op.ActualState, op.Diff1, op.Diff2)
-		}
 
 		// Give the user some next-steps, unless we're running in an automation
 		// tool which is presumed to provide its own UI for further actions.
@@ -243,4 +239,8 @@ const planRefreshing = `
 [reset][bold]Refreshing Terraform state in-memory prior to plan...[reset]
 The refreshed state will be used to calculate this plan, but will not be
 persisted to local or remote state storage.
+`
+
+const planShowMoves  = `
+"\nInstead, you can apply following terraform state mv, to avoid destroy & create in some cases.\n\n"
 `

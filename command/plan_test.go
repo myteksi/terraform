@@ -34,7 +34,8 @@ func TestPlan(t *testing.T) {
 			Ui:               ui,
 		},
 	}
-	var args []string
+
+	args := []string{}
 	if code := c.Run(args); code != 0 {
 		t.Fatalf("bad: %d\n\n%s", code, ui.ErrorWriter.String())
 	}
@@ -95,10 +96,7 @@ func TestPlan_plan(t *testing.T) {
 		},
 	}
 
-	//statePath := "/Users/savankumar.gudaas/gopath/src/gitlab.myteksi.net/sysops/infrastructure/qa/applications/chronos"
-	args := []string{
-		//"-state", statePath,
-		planPath}
+	args := []string{planPath}
 	if code := c.Run(args); code != 0 {
 		t.Fatalf("bad: %d\n\n%s", code, ui.ErrorWriter.String())
 	}
@@ -169,7 +167,7 @@ func TestPlan_destroy(t *testing.T) {
 
 	outPath := testTempFile(t)
 	statePath := testStateFile(t, originalState)
-	//statePath := "/Users/savankumar.gudaas/gopath/src/gitlab.myteksi.net/sysops/infrastructure/qa/applications/chronos"
+	
 	p := testProvider()
 	ui := new(cli.MockUi)
 	c := &PlanCommand{

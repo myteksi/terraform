@@ -35,7 +35,6 @@ func (c *PlanCommand) Run(args []string) int {
 		return 1
 	}
 
-	var diff1, diff2 string
 
 	cmdFlags := c.Meta.flagSet("plan")
 	cmdFlags.BoolVar(&destroy, "destroy", false, "destroy")
@@ -48,8 +47,6 @@ func (c *PlanCommand) Run(args []string) int {
 	cmdFlags.BoolVar(&detailed, "detailed-exitcode", false, "detailed-exitcode")
 	cmdFlags.BoolVar(&c.Meta.stateLock, "lock", true, "lock state")
 	cmdFlags.DurationVar(&c.Meta.stateLockTimeout, "lock-timeout", 0, "lock timeout")
-	cmdFlags.StringVar(&diff1, "diff1", "", "foo")
-	cmdFlags.StringVar(&diff2, "diff2", "", "bar")
 	cmdFlags.Usage = func() { c.Ui.Error(c.Help()) }
 
 	if err := cmdFlags.Parse(args); err != nil {
@@ -121,8 +118,6 @@ func (c *PlanCommand) Run(args []string) int {
 	opReq.PlanOutPath = outPath
 	opReq.Type = backend.OperationTypePlan
 	opReq.ActualState = oldState
-	opReq.Diff1 = diff1
-	opReq.Diff2 = diff2
 
 	// Perform the operation
 	op, err := c.RunOperation(b, opReq)
@@ -201,10 +196,6 @@ Options:
   -var-file=foo       Set variables in the Terraform configuration from
                       a file. If "terraform.tfvars" or any ".auto.tfvars"
                       files are present, they will be automatically loaded.
-
-  -diff1=foo       	  To show diff between two Resource, specify first Resource here.
-
-  -diff2=bar	      To show diff between two Resource, specify second Resource here.
 `
 	return strings.TrimSpace(helpText)
 }
