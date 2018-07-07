@@ -1,16 +1,16 @@
 package format
 
 import (
-	"strings"
-	"github.com/aws/aws-sdk-go/service/ec2"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
 	"bytes"
 	"fmt"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/ec2"
 	"log"
+	"strings"
 )
 
-func sg_suggest_filter(r *InstanceDiff, cond map[string]string) []*ec2.Filter{
+func sg_suggest_filter(r *InstanceDiff, cond map[string]string) []*ec2.Filter {
 
 	listFilter := []*ec2.Filter{}
 
@@ -29,7 +29,7 @@ func sg_suggest_filter(r *InstanceDiff, cond map[string]string) []*ec2.Filter{
 		aFilter := &ec2.Filter{
 			Name: aws.String("group-name"),
 			Values: []*string{
-				aws.String(cond["name_prefix"]+"*"),
+				aws.String(cond["name_prefix"] + "*"),
 			},
 		}
 		listFilter = append(listFilter, aFilter)
@@ -59,7 +59,7 @@ func sg_imports(r *InstanceDiff, cond map[string]string) string {
 		Filters: listFilter,
 	}
 	var buffer bytes.Buffer
-	resp, err := ec2svc.DescribeSecurityGroups(describeSecurityGroupInput);
+	resp, err := ec2svc.DescribeSecurityGroups(describeSecurityGroupInput)
 	if err != nil {
 		fmt.Println("there was an error listing instances in", err.Error())
 		log.Fatal(err.Error())
@@ -73,13 +73,13 @@ func sg_imports(r *InstanceDiff, cond map[string]string) string {
 	if len(resp.SecurityGroups) == 1 {
 		buffer.WriteString("terraform import  ")
 		buffer.WriteString(r.Addr.String() + "  ")
-		buffer.WriteString(*(resp.SecurityGroups[0].GroupId) + "\n\n");
+		buffer.WriteString(*(resp.SecurityGroups[0].GroupId) + "\n\n")
 		return buffer.String()
 	}
 
 	buffer.WriteString("Multiple Security Groups found\n")
 	for _, res := range resp.SecurityGroups {
-		buffer.WriteString( "> "+*res.GroupId + "\n")
+		buffer.WriteString("> " + *res.GroupId + "\n")
 	}
 	buffer.WriteString("\n")
 	return buffer.String()

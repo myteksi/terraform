@@ -85,8 +85,6 @@ func initCommands(config *Config) {
 				Meta: meta,
 			}, nil
 		},
-
-
 	}
 }
 

@@ -1,14 +1,14 @@
 package format
 
 import (
-	"github.com/aws/aws-sdk-go/aws/session"
 	"bytes"
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/kms"
 )
 
 func kms_alias_import(r *InstanceDiff, cond map[string]string) string {
 
-	name, ok := cond["name"];
+	name, ok := cond["name"]
 	if !ok {
 		return ""
 	}
@@ -33,10 +33,9 @@ func kms_alias_import(r *InstanceDiff, cond map[string]string) string {
 	if err != nil {
 		buffer.WriteString("No Import: There is no kms alias named " + name)
 		buffer.WriteString("\n")
-		return buffer.String();
+		return buffer.String()
 		//log.Fatal(err.Error())
 	}
-
 
 	if len(list) == 0 {
 		buffer.WriteString("No Import: There is no LC with name prefix " + name)
@@ -46,13 +45,13 @@ func kms_alias_import(r *InstanceDiff, cond map[string]string) string {
 	if len(list) == 1 {
 		buffer.WriteString("terraform import  ")
 		buffer.WriteString(r.Addr.String() + "  ")
-		buffer.WriteString(list[0]+ "\n\n");
+		buffer.WriteString(list[0] + "\n\n")
 		return buffer.String()
 	}
 
 	buffer.WriteString("Multiple kms alias found\n")
 	for _, res := range list {
-		buffer.WriteString( "> "+ res + "\n")
+		buffer.WriteString("> " + res + "\n")
 	}
 	buffer.WriteString("\n")
 	return buffer.String()

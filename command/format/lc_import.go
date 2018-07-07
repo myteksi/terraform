@@ -1,15 +1,15 @@
 package format
 
 import (
-	"github.com/aws/aws-sdk-go/aws/session"
 	"bytes"
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/autoscaling"
 	"strings"
 )
 
 func lc_import(r *InstanceDiff, cond map[string]string) string {
 
-	name, ok := cond["name_prefix"];
+	name, ok := cond["name_prefix"]
 	if !ok {
 		return ""
 	}
@@ -17,12 +17,11 @@ func lc_import(r *InstanceDiff, cond map[string]string) string {
 	names = append(names, &name)
 	svc := autoscaling.New(session.New())
 	input := &autoscaling.DescribeLaunchConfigurationsInput{
-		LaunchConfigurationNames: []*string{
-		},
+		LaunchConfigurationNames: []*string{},
 	}
 
 	list := make([]string, 0)
-	err := svc.DescribeLaunchConfigurationsPages(input, func (result *autoscaling.DescribeLaunchConfigurationsOutput, lastPage bool) bool {
+	err := svc.DescribeLaunchConfigurationsPages(input, func(result *autoscaling.DescribeLaunchConfigurationsOutput, lastPage bool) bool {
 		for _, res := range result.LaunchConfigurations {
 
 			if strings.HasPrefix(*(res.LaunchConfigurationName), name) {
@@ -37,7 +36,7 @@ func lc_import(r *InstanceDiff, cond map[string]string) string {
 	if err != nil {
 		buffer.WriteString("No Import: There is no lc named " + name)
 		buffer.WriteString("\n")
-		return buffer.String();
+		return buffer.String()
 		//log.Fatal(err.Error())
 	}
 
@@ -49,13 +48,13 @@ func lc_import(r *InstanceDiff, cond map[string]string) string {
 	if len(list) == 1 {
 		buffer.WriteString("terraform import  ")
 		buffer.WriteString(r.Addr.String() + "  ")
-		buffer.WriteString(list[0]+ "\n\n");
+		buffer.WriteString(list[0] + "\n\n")
 		return buffer.String()
 	}
 
 	buffer.WriteString("Multiple LC found\n")
 	for _, res := range list {
-		buffer.WriteString( "> "+ res + "\n")
+		buffer.WriteString("> " + res + "\n")
 	}
 	buffer.WriteString("\n")
 	return buffer.String()

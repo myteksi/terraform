@@ -1,4 +1,3 @@
-
 package format
 
 import (
@@ -27,8 +26,8 @@ func SuggestImport(r *InstanceDiff) string {
 			if attr.Path == "tags.%" {
 
 			} else if strings.HasPrefix(attr.Path, "tags.") {
-				filters[strings.Replace(attr.Path,"tags.", "tags:",1)] = v
-			} else if strings.HasSuffix(attr.Path, ":#"){
+				filters[strings.Replace(attr.Path, "tags.", "tags:", 1)] = v
+			} else if strings.HasSuffix(attr.Path, ":#") {
 
 			} else {
 				filters[attr.Path] = v
@@ -52,13 +51,12 @@ func SuggestImport(r *InstanceDiff) string {
 	case "aws_iam_role":
 		return iam_role_import(r, filters)
 	case "aws_iam_instance_profile":
-		return instance_profile_import(r, filters);
+		return instance_profile_import(r, filters)
 	case "aws_s3_bucket":
-		return s3_import(r, filters);
+		return s3_import(r, filters)
 	case "aws_kms_alias":
 		return kms_alias_import(r, filters)
-		
-		
+
 	}
 	return ""
 }
