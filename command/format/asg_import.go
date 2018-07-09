@@ -26,14 +26,14 @@ func asg_import(r *InstanceDiff, cond map[string]string) string {
 
 	result, err := elbsvc.DescribeAutoScalingGroups(input)
 	if err != nil {
-		buffer.WriteString("No Import: There is no asl named " + name)
+		buffer.WriteString("No Import: There is no asg named " + name)
 		buffer.WriteString("\n")
 		return buffer.String()
 		//log.Fatal(err.Error())
 	}
 
 	if len(result.AutoScalingGroups) == 0 {
-		buffer.WriteString("No Import: There is no asl named " + name)
+		buffer.WriteString("No Import: There is no asg named " + name)
 		buffer.WriteString("\n")
 		return buffer.String()
 	}

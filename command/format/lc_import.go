@@ -34,7 +34,7 @@ func lc_import(r *InstanceDiff, cond map[string]string) string {
 	var buffer bytes.Buffer
 
 	if err != nil {
-		buffer.WriteString("No Import: There is no lc named " + name)
+		buffer.WriteString("No Import: There is no LC named " + name)
 		buffer.WriteString("\n")
 		return buffer.String()
 		//log.Fatal(err.Error())

@@ -25,7 +25,7 @@ func rds_import(r *InstanceDiff, cond map[string]string) string {
 	var buffer bytes.Buffer
 
 	if err != nil {
-		buffer.WriteString("No Import: There is no rds with identifier " + name)
+		buffer.WriteString("No Import: There is no RDS with identifier " + name)
 		buffer.WriteString("\n")
 		return buffer.String()
 		//log.Fatal(err.Error())
