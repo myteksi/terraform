@@ -26,10 +26,16 @@ func asg_import(r *InstanceDiff, cond map[string]string) string {
 
 	result, err := elbsvc.DescribeAutoScalingGroups(input)
 	if err != nil {
-		buffer.WriteString("No Import: There is no elb named " + name)
+		buffer.WriteString("No Import: There is no asl named " + name)
 		buffer.WriteString("\n")
 		return buffer.String()
 		//log.Fatal(err.Error())
+	}
+
+	if len(result.AutoScalingGroups) == 0 {
+		buffer.WriteString("No Import: There is no asl named " + name)
+		buffer.WriteString("\n")
+		return buffer.String()
 	}
 
 	if len(result.AutoScalingGroups) == 1 {
@@ -39,7 +45,6 @@ func asg_import(r *InstanceDiff, cond map[string]string) string {
 		return buffer.String()
 	}
 
-	buffer.WriteString("Multiple ELBs found\n")
 	for _, res := range result.AutoScalingGroups {
 		buffer.WriteString("> " + *res.AutoScalingGroupName + "\n")
 	}

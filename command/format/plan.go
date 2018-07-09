@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform/config"
 	"github.com/hashicorp/terraform/terraform"
 	"github.com/mitchellh/colorstring"
+	"os"
 )
 
 // Plan is a representation of a plan optimized for display to
@@ -295,6 +296,11 @@ func formatPlanInstanceDiff(buf *bytes.Buffer, r *InstanceDiff, keyLen int, colo
 			color, symbol, color, addrStr, extraStr,
 		)),
 	)
+
+	if os.Getenv("AWS_REGION") == "" {
+		os.Setenv("AWS_REGION", "ap-southeast-1")
+		fmt.Println("AWS_REGION was empty, so I set it to ap-southeast-1")
+	}
 
 	for _, attr := range r.Attributes {
 

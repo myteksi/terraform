@@ -38,7 +38,7 @@ func kms_alias_import(r *InstanceDiff, cond map[string]string) string {
 	}
 
 	if len(list) == 0 {
-		buffer.WriteString("No Import: There is no LC with name prefix " + name)
+		buffer.WriteString("No Import: There is no kms alias with name prefix " + name)
 		buffer.WriteString("\n")
 		return buffer.String()
 	}
