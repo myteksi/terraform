@@ -12,7 +12,6 @@ func sg_suggest_filter(r *InstanceDiff, cond map[string]string) []*ec2.Filter {
 
 	listFilter := []*ec2.Filter{}
 
-
 	if _, ok := cond["name"]; ok {
 		aFilter := &ec2.Filter{
 			Name: aws.String("group-name"),
