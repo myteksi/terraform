@@ -2,17 +2,16 @@ package format
 
 import (
 	"bytes"
-	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
-	"log"
 	"strings"
 )
 
 func sg_suggest_filter(r *InstanceDiff, cond map[string]string) []*ec2.Filter {
 
 	listFilter := []*ec2.Filter{}
+
 
 	if _, ok := cond["name"]; ok {
 		aFilter := &ec2.Filter{
@@ -59,10 +58,16 @@ func sg_imports(r *InstanceDiff, cond map[string]string) string {
 		Filters: listFilter,
 	}
 	var buffer bytes.Buffer
+
+	if len(listFilter) == 0 {
+		buffer.WriteString("No Import: No security groups found \n\n")
+		return buffer.String()
+	}
+
 	resp, err := ec2svc.DescribeSecurityGroups(describeSecurityGroupInput)
 	if err != nil {
-		fmt.Println("there was an error listing instances in", err.Error())
-		log.Fatal(err.Error())
+		buffer.WriteString("No Import: No security groups found \n\n")
+		return buffer.String()
 	}
 
 	if len(resp.SecurityGroups) < 1 {
