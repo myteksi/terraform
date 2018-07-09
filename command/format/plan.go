@@ -352,5 +352,7 @@ func formatPlanInstanceDiff(buf *bytes.Buffer, r *InstanceDiff, keyLen int, colo
 
 	// Write the reset color so we don't bleed color into later text
 	buf.WriteString(colorizer.Color("[reset]\n"))
-	buf.WriteString(SuggestImport(r))
+	if r.Action == terraform.DiffCreate {
+		buf.WriteString(SuggestImport(r))
+	}
 }
