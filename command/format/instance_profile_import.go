@@ -32,7 +32,7 @@ func instance_profile_import(r *InstanceDiff, cond map[string]string) string {
 
 	buffer.WriteString("terraform import  ")
 	buffer.WriteString(r.Addr.String() + "  ")
-	buffer.WriteString(*(result.InstanceProfile.InstanceProfileId) + "\n\n")
+	buffer.WriteString(*(result.InstanceProfile.InstanceProfileName) + "\n\n")
 	return buffer.String()
 
 }
