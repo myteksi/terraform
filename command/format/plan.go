@@ -488,6 +488,14 @@ func (p *Plan) checkRename(create *InstanceDiff, delete *InstanceDiff, oldStateM
 			continue
 		}
 
+		if attr.Path == "description" {
+			continue
+		}
+
+		if attr.Path == "name_prefix" {
+			continue
+		}
+
 		if oldStateMap[delete.Addr.Type][delete.Addr.String()][attr.Path] != attr.NewValue {
 			return false
 		}
