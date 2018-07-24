@@ -9,6 +9,10 @@ Resource Import Suggest Tool
     
 - Any queries talk to @savankumar.gudaas 
 
+To setup in GoLand follow below configuration
+
+<img alt="Goland Config" src ="https://drive.google.com/open?id=1tCVUwlSL7fgg_BVZ-BtRgAisrKiwvCAg" width="700px"/>
+
     
 /////////////////////////////////////////////////////////////////////
 
