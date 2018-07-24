@@ -4,7 +4,7 @@ Resource Import Suggest Tool
 
 - **Adding New Resource Import**
     - Write import logic at command/format/ur_resource_import.go
-    - Update command/suggest.go to call your logic
+    - Update command/format/suggest.go to call your logic
     
     
 - Any queries talk to @savankumar.gudaas 
