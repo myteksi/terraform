@@ -96,6 +96,8 @@ if [ "${TF_DEV}x" = "x" ]; then
     done
 fi
 
+mv bin/terraform bin/tf-imports
+
 # Done!
 echo
 echo "==> Results:"
