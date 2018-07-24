@@ -11,8 +11,6 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/mitchellh/colorstring"
-
 	"github.com/hashicorp/go-plugin"
 	"github.com/hashicorp/terraform/command/format"
 	"github.com/hashicorp/terraform/helper/logging"
@@ -129,12 +127,12 @@ func wrappedMain() int {
 		// that command.Meta could otherwise figure out in smarter ways.
 		Ui.Error("There are some problems with the CLI configuration:")
 		for _, diag := range diags {
-			earlyColor := &colorstring.Colorize{
-				Colors:  colorstring.DefaultColors,
-				Disable: true, // Disable color to be conservative until we know better
-				Reset:   true,
-			}
-			Ui.Error(format.Diagnostic(diag, earlyColor, 78))
+			//earlyColor := &colorstring.Colorize{
+			//	Colors:  colorstring.DefaultColors,
+			//	Disable: true, // Disable color to be conservative until we know better
+			//	Reset:   true,
+			//}
+			Ui.Error(format.Diagnostic(diag, nil, 78))
 		}
 		if diags.HasErrors() {
 			Ui.Error("As a result of the above problems, Terraform may not behave as intended.\n\n")
