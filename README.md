@@ -3,11 +3,14 @@ Resource Import Suggest Tool
 
 
 - **Adding New Resource Import**
+    - Import this repo under `hashicorp/terraform` (not myteksi/terraform)
     - Write import logic at command/format/ur_resource_import.go
     - Update command/format/suggest.go to call your logic
-    
+    - run `make dev` to create binary
+    - Update binary here
     
 - Any queries talk to @savankumar.gudaas 
+
 
 To setup in GoLand follow below configuration
 
