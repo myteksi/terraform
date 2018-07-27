@@ -7,7 +7,7 @@ Resource Import Suggest Tool
     - Write import logic at command/format/ur_resource_import.go
     - Update command/format/suggest.go to call your logic
     - run `make dev` to create binary
-    - Update binary here
+    - Update binary [here](https://drive.google.com/file/d/1TVWHg4xjHUiOps_1_hG_PzbCGdfE6nlH/view?usp=sharing)
     
 - Any queries talk to @savankumar.gudaas 
 
