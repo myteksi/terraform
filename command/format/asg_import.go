@@ -46,7 +46,9 @@ func asg_import(r *InstanceDiff, cond map[string]string) string {
 	}
 
 	for _, res := range result.AutoScalingGroups {
-		buffer.WriteString("> " + *res.AutoScalingGroupName + "\n")
+		buffer.WriteString("# terraform import  ")
+		buffer.WriteString(r.Addr.String() + "  ")
+		buffer.WriteString( *res.AutoScalingGroupName + "\n")
 	}
 	buffer.WriteString("\n")
 	return buffer.String()

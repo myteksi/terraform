@@ -35,7 +35,9 @@ func elb_import(r *InstanceDiff, cond map[string]string) string {
 
 	buffer.WriteString("Multiple ELBs found\n")
 	for _, res := range resp.LoadBalancerDescriptions {
-		buffer.WriteString("> " + *res.LoadBalancerName + "\n")
+		buffer.WriteString("# terraform import  ")
+		buffer.WriteString(r.Addr.String() + "  ")
+		buffer.WriteString( *res.LoadBalancerName + "\n")
 	}
 	buffer.WriteString("\n")
 	return buffer.String()

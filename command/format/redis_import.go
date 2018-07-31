@@ -44,7 +44,9 @@ func redis_import(r *InstanceDiff, cond map[string]string) string {
 
 	buffer.WriteString("Multiple RDS found\n")
 	for _, res := range result.CacheClusters {
-		buffer.WriteString("> " + *(res.CacheClusterId) + "\n")
+		buffer.WriteString("# terraform import  ")
+		buffer.WriteString(r.Addr.String() + "  ")
+		buffer.WriteString( *(res.CacheClusterId) + "\n")
 	}
 	buffer.WriteString("\n")
 	return buffer.String()

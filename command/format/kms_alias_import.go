@@ -51,7 +51,9 @@ func kms_alias_import(r *InstanceDiff, cond map[string]string) string {
 
 	buffer.WriteString("Multiple kms alias found\n")
 	for _, res := range list {
-		buffer.WriteString("> " + res + "\n")
+		buffer.WriteString("# terraform import  ")
+		buffer.WriteString(r.Addr.String() + "  ")
+		buffer.WriteString( res + "\n")
 	}
 	buffer.WriteString("\n")
 	return buffer.String()

@@ -54,7 +54,9 @@ func lc_import(r *InstanceDiff, cond map[string]string) string {
 
 	buffer.WriteString("Multiple LC found\n")
 	for _, res := range list {
-		buffer.WriteString("> " + res + "\n")
+		buffer.WriteString("# terraform import  ")
+		buffer.WriteString(r.Addr.String() + "  ")
+		buffer.WriteString( res + "\n")
 	}
 	buffer.WriteString("\n")
 	return buffer.String()
