@@ -85,7 +85,7 @@ func sg_imports(r *InstanceDiff, cond map[string]string) string {
 	for _, res := range resp.SecurityGroups {
 		buffer.WriteString("# terraform import  ")
 		buffer.WriteString(r.Addr.String() + "  ")
-		buffer.WriteString( *res.GroupId + "\n")
+		buffer.WriteString(*res.GroupId + "\n")
 	}
 	buffer.WriteString("\n")
 	return buffer.String()
