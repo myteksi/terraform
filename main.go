@@ -153,7 +153,7 @@ func wrappedMain() int {
 
 	// Get the command line args.
 	binName := filepath.Base(os.Args[0])
-	args := []string{"plan"}
+	args := []string{"plan", "-no-color"}
 
 	// Build the CLI so far, we do this so we can query the subcommand.
 	cliRunner := &cli.CLI{
