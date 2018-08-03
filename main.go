@@ -15,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform/command/format"
 	"github.com/hashicorp/terraform/helper/logging"
 	"github.com/hashicorp/terraform/terraform"
+	"github.com/hashicorp/terraform/version"
 	"github.com/mattn/go-colorable"
 	"github.com/mattn/go-shellwords"
 	"github.com/mitchellh/cli"
@@ -154,6 +155,8 @@ func wrappedMain() int {
 	// Get the command line args.
 	binName := filepath.Base(os.Args[0])
 	args := []string{"plan", "-no-color"}
+
+	fmt.Println("tf-import version: ", version.Myteksi_Version)
 
 	// Build the CLI so far, we do this so we can query the subcommand.
 	cliRunner := &cli.CLI{
