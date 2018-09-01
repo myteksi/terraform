@@ -13,7 +13,7 @@ import (
 // The main version number that is being run at the moment.
 const Version = "0.11.8"
 
-const Myteksi_Version  = "2018-08-03 00:00:00:000"
+const Myteksi_Version = "2018-08-03 00:00:00:000"
 
 // A pre-release marker for the version. If this is "" (empty string)
 // then it means that it is a final release. Otherwise, this is a pre-release
