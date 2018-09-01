@@ -1,8 +1,9 @@
 package format
 
 import (
-	"github.com/aws/aws-sdk-go/service/ec2"
 	"strings"
+
+	"github.com/aws/aws-sdk-go/service/ec2"
 )
 
 type SuggestAWSImport struct {
@@ -50,6 +51,10 @@ func SuggestImport(r *InstanceDiff) string {
 		return redis_import(r, filters)
 	case "aws_iam_role":
 		return iam_role_import(r, filters)
+	case "aws_iam_policy":
+		return iam_policy_import(r, filters)
+	case "aws_iam_role_policy":
+		return iam_role_policy_import(r, filters)
 	case "aws_iam_instance_profile":
 		return instance_profile_import(r, filters)
 	case "aws_s3_bucket":
